@@ -24,6 +24,8 @@ class MyApp extends StatelessWidget {
                 'Achmad Anval Adhiem Allain',
                 style: TextStyle(fontSize: 24),
               ),
+              Text('244107020039', style: TextStyle(fontSize: 24)),
+              Text('Teknik Informatika', style: TextStyle(fontSize: 24)),
               Text('Pemrograman Mobile - Minggu 1'),
             ],
           ),
