@@ -1,54 +1,70 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+void main() => runApp(const ProfileApp());
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class ProfileApp extends StatelessWidget {
+  const ProfileApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Profil Mahasiswa',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-        useMaterial3: true,
+      home: Scaffold(body: Center(child: ProfileCard())),
+    );
+  }
+}
+
+class ProfileCard extends StatelessWidget {
+  const ProfileCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 320,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.indigo.shade50,
+        borderRadius: BorderRadius.circular(16),
       ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Profil Mahasiswa'),
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        ),
-        body: const Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
             children: [
-              Icon(Icons.person, size: 72),
-              SizedBox(height: 16),
-              Text(
-                'Achmad Anval Adhiem Allain',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 8),
-              Text(
-                '244107020039',
-                style: TextStyle(fontSize: 20),
-              ),
-              SizedBox(height: 8),
-              Text(
-                'Teknik Informatika',
-                style: TextStyle(fontSize: 20),
-              ),
-              SizedBox(height: 8),
-              Text(
-                'Pemrograman Mobile - Minggu 1',
-                style: TextStyle(fontSize: 16, color: Colors.grey),
+              const CircleAvatar(child: Icon(Icons.person)),
+              const SizedBox(width: 12),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text(
+                    'Nama Mahasiswa',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Text('Achmad Anval Adheim Allain'),
+                ],
               ),
             ],
           ),
-        ),
+          const SizedBox(height: 12),
+          const Row(
+            children: [
+              Expanded(child: Text('NIM')),
+              Text('244107020039'),
+            ],
+          ),
+          const Row(
+            children: [
+              Expanded(child: Text('Kelas')),
+              Text('TI-3E'),
+            ],
+          ),
+          const Row(
+            children: [
+              Expanded(child: Text('Email')),
+              Text('anvalalan@gmail.com'),
+            ],
+          ),
+        ],
       ),
     );
   }

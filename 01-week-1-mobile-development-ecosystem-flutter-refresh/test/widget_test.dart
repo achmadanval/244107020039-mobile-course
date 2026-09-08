@@ -4,7 +4,7 @@ import 'package:my_first_app/main.dart';
 void main() {
   testWidgets('Profil Mahasiswa smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+    await tester.pumpWidget(const ProfileApp());
 
     // Verify student name and details are displayed.
     expect(find.text('Profil Mahasiswa'), findsOneWidget);
