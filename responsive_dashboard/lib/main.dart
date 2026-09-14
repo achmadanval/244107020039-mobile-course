@@ -5,24 +5,6 @@ void main() {
   runApp(const DashboardApp());
 }
 
-/*class DashboardApp extends StatelessWidget {
-  const DashboardApp({super.key});
-
-  // This widget is the root of your application.
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(useMaterial3: true, colorSchemeSeed: Colors.indigo),
-      darkTheme: ThemeData(
-        useMaterial3: true,
-        brightness: Brightness.dark,
-        colorSchemeSeed: Colors.indigo,
-      ),
-      themeMode: ThemeMode.system,
-      home: const DashboardPage(),
-    );
-  }
-}*/
 class DashboardApp extends StatefulWidget {
   const DashboardApp({super.key});
 
@@ -45,7 +27,7 @@ class _DashboardAppState extends State<DashboardApp> {
       ),
       themeMode: isDark ? ThemeMode.dark : ThemeMode.light,
       //themeMode: ThemeMode.system,
-      home: DashboardPage(
+      home: AcademicOverviewPage(
         isDark: isDark,
         onDarkChange: (value) => setState(() => isDark = value),
       ),
@@ -53,8 +35,8 @@ class _DashboardAppState extends State<DashboardApp> {
   }
 }
 
-class DashboardPage extends StatelessWidget {
-  const DashboardPage({
+class AcademicOverviewPage extends StatelessWidget {
+  const AcademicOverviewPage({
     required this.isDark,
     required this.onDarkChange,
     super.key,
@@ -66,33 +48,128 @@ class DashboardPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Student Dashboard'),
+        title: const Text('Academic Overview'),
         actions: [
-          Row(
-            children: [
-              Icon(isDark ? Icons.dark_mode : Icons.light_mode),
-              const SizedBox(width: 4),
-              CupertinoSwitch(value: isDark, onChanged: onDarkChange),
-              const SizedBox(width: 12),
-            ],
+          Semantics(
+            label: 'Toggle beralih mode gelap dan terang',
+            child: Row(
+              children: [
+                Icon(isDark ? Icons.dark_mode : Icons.light_mode),
+                const SizedBox(width: 6),
+                CupertinoSwitch(value: isDark, onChanged: onDarkChange),
+                const SizedBox(width: 12),
+              ],
+            ),
           ),
         ],
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {
-          final columns = constraints.maxWidth >= 700 ? 2 : 1;
-          return GridView.count(
+          final isWide = constraints.maxWidth >= 650;
+          final cards = const [
+            DashboardCard(
+              title: 'IPK Komulatif',
+              value: '3.66',
+              icon: Icons.school,
+            ),
+            DashboardCard(
+              title: 'Presensi AIS',
+              value: '90%',
+              icon: Icons.check_circle,
+            ),
+            DashboardCard(
+              title: 'Total SKS Lulus',
+              value: '44/144 SKS',
+              icon: Icons.school,
+            ),
+            DashboardCard(
+              title: 'Tugas Menunggu',
+              value: '05',
+              icon: Icons.pending_actions,
+            ),
+          ];
+
+          return SingleChildScrollView(
             padding: const EdgeInsets.all(16),
-            crossAxisCount: columns,
-            crossAxisSpacing: 16,
-            mainAxisSpacing: 16,
-            childAspectRatio: 2.6,
-            children: const [
-              DashboardCard(title: 'Assignments', value: '8'),
-              DashboardCard(title: 'Attendance', value: '92%'),
-              DashboardCard(title: 'Portfolio', value: 'Ready'),
-              DashboardCard(title: 'Current week', value: '02'),
-            ],
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context)
+                        .colorScheme
+                        .surfaceContainerHighest,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 28,
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                        child: Icon(
+                          Icons.person,
+                          size: 32,
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Achmad Anval',
+                              style: Theme.of(context).textTheme.titleLarge
+                                  ?.copyWith(fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              'D4 Teknik Informatika - Semester 4',
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 24),
+
+                // Responsive Layout: 1 Kolom (Layar Sempit) vs 2 Kolom (Layar Lebar)
+                if (!isWide)
+                  Column(
+                    children: cards
+                        .map(
+                          (card) => Padding(
+                            padding: const EdgeInsets.only(bottom: 12),
+                            child: card,
+                          ),
+                        )
+                        .toList(),
+                  )
+                else
+                  Column(
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(child: cards[0]),
+                          const SizedBox(width: 12),
+                          Expanded(child: cards[1]),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      Row(
+                        children: [
+                          Expanded(child: cards[2]),
+                          const SizedBox(width: 12),
+                          Expanded(child: cards[3]),
+                        ],
+                      ),
+                    ],
+                  ),
+              ],
+            ),
           );
         },
       ),
@@ -101,23 +178,67 @@ class DashboardPage extends StatelessWidget {
 }
 
 class DashboardCard extends StatelessWidget {
-  const DashboardCard({required this.title, required this.value, super.key});
+  const DashboardCard({
+    required this.title,
+    required this.value,
+    required this.icon,
+    super.key,
+  });
   final String title;
   final String value;
+  final IconData icon;
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Semantics(
-      label: 'Statistik untuk $title adalah $value',
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Row(
-            children: [
-              Expanded(child: Text(title)),
-              Text(value, style: Theme.of(context).textTheme.headlineSmall),
-            ],
-          ),
+      label: 'Statistik $title adalah $value',
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: colorScheme.surface,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: colorScheme.outlineVariant.withAlpha(80)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withAlpha(10),
+              blurRadius: 4,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: colorScheme.primaryContainer,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(icon, color: colorScheme.onPrimaryContainer),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    title,
+                    style: Theme.of(context).textTheme.bodyMedium
+                        ?.copyWith(color: colorScheme.onSurfaceVariant),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    value,
+                    style: Theme.of(context).textTheme.titleLarge
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
