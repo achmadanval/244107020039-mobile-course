@@ -1,17 +1,34 @@
 # week4_api
 
-A new Flutter project.
+Achmad Anval Adhiem Allain 
+244107020039
+TI-3E
 
-## Getting Started
+## AI Verification Checklist
+Sebelum kode AI diterima, verifikasi hal berikut dan catat temuan Anda di README:
 
-This project is a starting point for a Flutter application.
+- Apakah UI memanggil Dio secara langsung (dilarang) atau lewat repository?
+    => Jawaban : Tidak, UI tidak memanggil Dio secara langsung
 
-A few resources to get you started if this is your first Flutter project:
+- Apakah fromJson aman null, atau masih memakai cast langsung yang bisa crash?
+    => Jawaban : aman null, menggunakan cast yang aman 
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+- Apakah semua tipe DioExceptionType (timeout, connectionError, badResponse) dipetakan ke pesan pengguna?
+    => Jawaban : Ya, semua tipe DioExceptionType dipetakan ke pesan pengguna
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Apakah baseUrl/timeout terpusat di satu client, bukan tersebar di tiap method?
+    => Jawaban : Ya, baseUrl/timeout terpusat di satu client, bukan tersebar di tiap method
+
+- Apakah test AI benar-benar menguji kasus field hilang, atau hanya happy path? Tambahkan minimal 1 edge case sendiri.
+    => Jawaban : Ya, test AI menguji kasus field hilang, dan saya menambahkan minimal 1 edge case sendiri
+
+- Jalankan flutter analyze dan flutter test, apakah hasil AI lolos tanpa warning?
+    => Jawaban : Ya, flutter analyze (0 issues) dan flutter test (semua 5 test lolos tanpa warning/error)
+
+### Melakukan Refactoring 
+
+ketika melakukan refactoring, saya menemukan bahwa ada beberapa perubahan yang perlu dilakukan agar kode lebih efisien dan mudah dipelihara. Berikut adalah beberapa perubahan yang saya lakukan:
+
+1. Memisahkan logika repository dari provider
+2. Menggunakan asyncNotifierProvider untuk state management
+3. Menambahkan test untuk memastikan kode berfungsi dengan benar
